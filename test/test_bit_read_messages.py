@@ -76,8 +76,8 @@ class ModbusBitMessageTests(unittest.TestCase):
     def testBitReadBaseRequests(self):
         ''' Test bit read request encoding '''
         messages = {
-            ReadBitsRequestBase(12, 14)        : '\x00\x0c\x00\x0e',
-            ReadBitsResponseBase([1,0,1,1,0])  : '\x01\x0d',
+            ReadBitsRequestBase(12, 14)        : b'\x00\x0c\x00\x0e',
+            ReadBitsResponseBase([1,0,1,1,0])  : b'\x01\x0d',
         }
         for request, expected in messages.items():
             self.assertEqual(request.encode(), expected)

@@ -28,10 +28,10 @@ class WriteRegisterMessagesTest(unittest.TestCase):
         self.value  = 0xabcd
         self.values = [0xa, 0xb, 0xc]
         self.write = {
-            WriteSingleRegisterRequest(1, self.value)       : '\x00\x01\xab\xcd',
-            WriteSingleRegisterResponse(1, self.value)      : '\x00\x01\xab\xcd',
-            WriteMultipleRegistersRequest(1, self.values)   : '\x00\x01\x00\x03\x06\x00\n\x00\x0b\x00\x0c',
-            WriteMultipleRegistersResponse(1, 5)            : '\x00\x01\x00\x05',
+            WriteSingleRegisterRequest(1, self.value)       : b'\x00\x01\xab\xcd',
+            WriteSingleRegisterResponse(1, self.value)      : b'\x00\x01\xab\xcd',
+            WriteMultipleRegistersRequest(1, self.values)   : b'\x00\x01\x00\x03\x06\x00\n\x00\x0b\x00\x0c',
+            WriteMultipleRegistersResponse(1, 5)            : b'\x00\x01\x00\x05',
         }
 
     def tearDown(self):

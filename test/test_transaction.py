@@ -67,7 +67,7 @@ class ModbusTransactionTest(unittest.TestCase):
     #---------------------------------------------------------------------------# 
     def testTCPFramerTransactionReady(self):
         ''' Test a tcp frame transaction '''
-        msg = "\x00\x01\x12\x34\x00\x04\xff\x02\x12\x34"
+        msg = b"\x00\x01\x12\x34\x00\x04\xff\x02\x12\x34"
         self.assertFalse(self._tcp.isFrameReady())
         self.assertFalse(self._tcp.checkFrame())
         self._tcp.addToFrame(msg)
@@ -80,7 +80,7 @@ class ModbusTransactionTest(unittest.TestCase):
 
     def testTCPFramerTransactionFull(self):
         ''' Test a full tcp frame transaction '''
-        msg = "\x00\x01\x12\x34\x00\x04\xff\x02\x12\x34"
+        msg = b"\x00\x01\x12\x34\x00\x04\xff\x02\x12\x34"
         self._tcp.addToFrame(msg)
         self.assertTrue(self._tcp.checkFrame())
         result = self._tcp.getFrame()
@@ -89,8 +89,8 @@ class ModbusTransactionTest(unittest.TestCase):
 
     def testTCPFramerTransactionHalf(self):
         ''' Test a half completed tcp frame transaction '''
-        msg1 = "\x00\x01\x12\x34\x00"
-        msg2 = "\x04\xff\x02\x12\x34"
+        msg1 = b"\x00\x01\x12\x34\x00"
+        msg2 = b"\x04\xff\x02\x12\x34"
         self._tcp.addToFrame(msg1)
         self.assertFalse(self._tcp.checkFrame())
         result = self._tcp.getFrame()
@@ -103,8 +103,8 @@ class ModbusTransactionTest(unittest.TestCase):
 
     def testTCPFramerTransactionHalf2(self):
         ''' Test a half completed tcp frame transaction '''
-        msg1 = "\x00\x01\x12\x34\x00\x04\xff"
-        msg2 = "\x02\x12\x34"
+        msg1 = b"\x00\x01\x12\x34\x00\x04\xff"
+        msg2 = b"\x02\x12\x34"
         self._tcp.addToFrame(msg1)
         self.assertFalse(self._tcp.checkFrame())
         result = self._tcp.getFrame()
@@ -117,8 +117,8 @@ class ModbusTransactionTest(unittest.TestCase):
 
     def testTCPFramerTransactionShort(self):
         ''' Test that we can get back on track after an invalid message '''
-        msg1 = "\x99\x99\x99\x99\x00\x01\x00\x01"
-        msg2 = "\x00\x01\x12\x34\x00\x05\xff\x02\x12\x34"
+        msg1 = b"\x99\x99\x99\x99\x00\x01\x00\x01"
+        msg2 = b"\x00\x01\x12\x34\x00\x05\xff\x02\x12\x34"
         self._tcp.addToFrame(msg1)
         self.assertFalse(self._tcp.checkFrame())
         result = self._tcp.getFrame()
@@ -137,7 +137,7 @@ class ModbusTransactionTest(unittest.TestCase):
         expected.transaction_id = 0x0001
         expected.protocol_id    = 0x1234
         expected.unit_id        = 0xff
-        msg = "\x00\x01\x12\x34\x00\x04\xff\x02\x12\x34"
+        msg = b"\x00\x01\x12\x34\x00\x04\xff\x02\x12\x34"
         self._tcp.addToFrame(msg)
         self.assertTrue(self._tcp.checkFrame())
         actual = ModbusRequest()
@@ -155,7 +155,7 @@ class ModbusTransactionTest(unittest.TestCase):
         message.protocol_id    = 0x1234
         message.unit_id        = 0xff
         message.function_code  = 0x01
-        expected = "\x00\x01\x12\x34\x00\x02\xff\x01"
+        expected = b"\x00\x01\x12\x34\x00\x02\xff\x01"
         actual = self._tcp.buildPacket(message)
         self.assertEqual(expected, actual)
         ModbusRequest.encode = old_encode
@@ -167,7 +167,7 @@ class ModbusTransactionTest(unittest.TestCase):
         ''' Test if the checks for a complete frame work '''
         self.assertFalse(self._rtu.isFrameReady())
 
-        msg_parts = ["\x00\x01\x00", "\x00\x00\x01\xfc\x1b"]
+        msg_parts = [b"\x00\x01\x00", b"\x00\x00\x01\xfc\x1b"]
         self._rtu.addToFrame(msg_parts[0])
         self.assertTrue(self._rtu.isFrameReady())
         self.assertFalse(self._rtu.checkFrame())
@@ -178,7 +178,7 @@ class ModbusTransactionTest(unittest.TestCase):
 
     def testRTUFramerTransactionFull(self):
         ''' Test a full rtu frame transaction '''
-        msg = "\x00\x01\x00\x00\x00\x01\xfc\x1b"
+        msg = b"\x00\x01\x00\x00\x00\x01\xfc\x1b"
         stripped_msg = msg[1:-2]
         self._rtu.addToFrame(msg)
         self.assertTrue(self._rtu.checkFrame())
@@ -188,7 +188,7 @@ class ModbusTransactionTest(unittest.TestCase):
 
     def testRTUFramerTransactionHalf(self):
         ''' Test a half completed rtu frame transaction '''
-        msg_parts = ["\x00\x01\x00", "\x00\x00\x01\xfc\x1b"]
+        msg_parts = [b"\x00\x01\x00", b"\x00\x00\x01\xfc\x1b"]
         stripped_msg = "".join(msg_parts)[1:-2]
         self._rtu.addToFrame(msg_parts[0])
         self.assertFalse(self._rtu.checkFrame())
@@ -202,7 +202,7 @@ class ModbusTransactionTest(unittest.TestCase):
     def testRTUFramerPopulate(self):
         ''' Test a rtu frame packet build '''
         request = ModbusRequest()
-        msg = "\x00\x01\x00\x00\x00\x01\xfc\x1b"
+        msg = b"\x00\x01\x00\x00\x00\x01\xfc\x1b"
         self._rtu.addToFrame(msg)
         self._rtu.populateHeader()
         self._rtu.populateResult(request)
@@ -221,14 +221,14 @@ class ModbusTransactionTest(unittest.TestCase):
         message = ModbusRequest()
         message.unit_id        = 0xff
         message.function_code  = 0x01
-        expected = "\xff\x01\x81\x80" # only header + CRC - no data
+        expected = b"\xff\x01\x81\x80" # only header + CRC - no data
         actual = self._rtu.buildPacket(message)
         self.assertEqual(expected, actual)
         ModbusRequest.encode = old_encode
 
     def testRTUDecodeException(self):
         ''' Test that the RTU framer can decode errors '''
-        message = "\x00\x90\x02\x9c\x01"
+        message = b"\x00\x90\x02\x9c\x01"
         actual = self._rtu.addToFrame(message)
         result = self._rtu.checkFrame()
         self.assertTrue(result)

@@ -34,17 +34,17 @@ class ReadRegisterMessagesTest(unittest.TestCase):
         self.value  = 0xabcd
         self.values = [0xa, 0xb, 0xc]
         self.request_read  = {
-            ReadRegistersRequestBase(1, 5)                  :'\x00\x01\x00\x05',
-            ReadHoldingRegistersRequest(1, 5)               :'\x00\x01\x00\x05',
-            ReadInputRegistersRequest(1,5)                  :'\x00\x01\x00\x05',
-            ReadWriteMultipleRegistersRequest(**arguments)  :'\x00\x01\x00\x05\x00\x01\x00'
-                                                             '\x05\x0a\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+            ReadRegistersRequestBase(1, 5)                  :b'\x00\x01\x00\x05',
+            ReadHoldingRegistersRequest(1, 5)               :b'\x00\x01\x00\x05',
+            ReadInputRegistersRequest(1,5)                  :b'\x00\x01\x00\x05',
+            ReadWriteMultipleRegistersRequest(**arguments)  :b'\x00\x01\x00\x05\x00\x01\x00'
+                                                             b'\x05\x0a\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
         }
         self.response_read  = {
-            ReadRegistersResponseBase(self.values)          :'\x06\x00\x0a\x00\x0b\x00\x0c',
-            ReadHoldingRegistersResponse(self.values)       :'\x06\x00\x0a\x00\x0b\x00\x0c',
-            ReadInputRegistersResponse(self.values)         :'\x06\x00\x0a\x00\x0b\x00\x0c',
-            ReadWriteMultipleRegistersResponse(self.values) :'\x06\x00\x0a\x00\x0b\x00\x0c',
+            ReadRegistersResponseBase(self.values)          :b'\x06\x00\x0a\x00\x0b\x00\x0c',
+            ReadHoldingRegistersResponse(self.values)       :b'\x06\x00\x0a\x00\x0b\x00\x0c',
+            ReadInputRegistersResponse(self.values)         :b'\x06\x00\x0a\x00\x0b\x00\x0c',
+            ReadWriteMultipleRegistersResponse(self.values) :b'\x06\x00\x0a\x00\x0b\x00\x0c',
         }
 
     def tearDown(self):

@@ -37,10 +37,10 @@ class ModbusBitMessageTests(unittest.TestCase):
 
     def testBitWriteBaseRequests(self):
         messages = {
-            WriteSingleCoilRequest(1, 0xabcd)      : '\x00\x01\xff\x00',
-            WriteSingleCoilResponse(1, 0xabcd)     : '\x00\x01\xff\x00',
-            WriteMultipleCoilsRequest(1, [True]*5) : '\x00\x01\x00\x05\x01\x1f',
-            WriteMultipleCoilsResponse(1, 5)       : '\x00\x01\x00\x05',
+            WriteSingleCoilRequest(1, 0xabcd)      : b'\x00\x01\xff\x00',
+            WriteSingleCoilResponse(1, 0xabcd)     : b'\x00\x01\xff\x00',
+            WriteMultipleCoilsRequest(1, [True]*5) : b'\x00\x01\x00\x05\x01\x1f',
+            WriteMultipleCoilsResponse(1, 5)       : b'\x00\x01\x00\x05',
         }
         for request, expected in messages.items():
             self.assertEqual(request.encode(), expected)
@@ -58,7 +58,7 @@ class ModbusBitMessageTests(unittest.TestCase):
 
     def testWriteSingleCoilRequestEncode(self):
         request = WriteSingleCoilRequest(1, False)
-        self.assertEquals(request.encode(), '\x00\x01\x00\x00')
+        self.assertEquals(request.encode(), b'\x00\x01\x00\x00')
 
     def testWriteSingleCoilExecute(self):
         context = MockContext(False, default=True)
@@ -68,12 +68,12 @@ class ModbusBitMessageTests(unittest.TestCase):
 
         context.valid = True
         result = request.execute(context)
-        self.assertEqual(result.encode(), '\x00\x02\xff\x00')
+        self.assertEqual(result.encode(), b'\x00\x02\xff\x00')
 
         context = MockContext(True, default=False)
         request = WriteSingleCoilRequest(2, False)
         result = request.execute(context)
-        self.assertEqual(result.encode(), '\x00\x02\x00\x00')
+        self.assertEqual(result.encode(), b'\x00\x02\x00\x00')
 
     def testWriteMultipleCoilsExecute(self):
         context = MockContext(False)
@@ -97,7 +97,7 @@ class ModbusBitMessageTests(unittest.TestCase):
         # validated request
         context.valid = True
         result  = request.execute(context)
-        self.assertEqual(result.encode(), '\x00\x02\x00\x04')
+        self.assertEqual(result.encode(), b'\x00\x02\x00\x04')
 
     def testWriteMultipleCoilsResponse(self):
         response = WriteMultipleCoilsResponse()

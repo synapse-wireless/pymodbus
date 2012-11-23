@@ -44,7 +44,7 @@ class ModbusBitMessageTests(unittest.TestCase):
         ''' Test basic bit message encoding/decoding '''
         handle  = ReadFifoQueueRequest(0x1234)
         result  = handle.encode()
-        self.assertEqual(result, '\x12\x34')
+        self.assertEqual(result, b'\x12\x34')
 
     def testReadFifoQueueRequestDecode(self):
         ''' Test basic bit message encoding/decoding '''
@@ -79,21 +79,21 @@ class ModbusBitMessageTests(unittest.TestCase):
 
     def testReadFifoQueueResponseEncode(self):
         ''' Test that the read fifo queue response can encode '''
-        message = '\x00\n\x00\x08\x00\x01\x00\x02\x00\x03\x00\x04'
+        message = b'\x00\n\x00\x08\x00\x01\x00\x02\x00\x03\x00\x04'
         handle  = ReadFifoQueueResponse([1,2,3,4])
         result  = handle.encode()
         self.assertEqual(result, message)
 
     def testReadFifoQueueResponseDecode(self):
         ''' Test that the read fifo queue response can decode '''
-        message = '\x00\n\x00\x08\x00\x01\x00\x02\x00\x03\x00\x04'
+        message = b'\x00\n\x00\x08\x00\x01\x00\x02\x00\x03\x00\x04'
         handle  = ReadFifoQueueResponse([1,2,3,4])
         handle.decode(message)
         self.assertEqual(handle.values, [1,2,3,4])
 
     def testRtuFrameSize(self):
         ''' Test that the read fifo queue response can decode '''
-        message = '\x00\n\x00\x08\x00\x01\x00\x02\x00\x03\x00\x04'
+        message = b'\x00\n\x00\x08\x00\x01\x00\x02\x00\x03\x00\x04'
         result  = ReadFifoQueueResponse.calculateRtuFrameSize(message)
         self.assertEqual(result, 14)
 
@@ -251,11 +251,11 @@ class ModbusBitMessageTests(unittest.TestCase):
         ''' Test basic bit message encoding/decoding '''
         handle  = MaskWriteRegisterRequest(0x0000, 0x0101, 0x1010)
         result  = handle.encode()
-        self.assertEqual(result, '\x00\x00\x01\x01\x10\x10')
+        self.assertEqual(result, b'\x00\x00\x01\x01\x10\x10')
 
     def testMaskWriteRegisterRequestDecode(self):
         ''' Test basic bit message encoding/decoding '''
-        request = '\x00\x04\x00\xf2\x00\x25'
+        request = b'\x00\x04\x00\xf2\x00\x25'
         handle  = MaskWriteRegisterRequest()
         handle.decode(request)
         self.assertEqual(handle.address, 0x0004)
@@ -295,11 +295,11 @@ class ModbusBitMessageTests(unittest.TestCase):
         ''' Test basic bit message encoding/decoding '''
         handle  = MaskWriteRegisterResponse(0x0000, 0x0101, 0x1010)
         result  = handle.encode()
-        self.assertEqual(result, '\x00\x00\x01\x01\x10\x10')
+        self.assertEqual(result, b'\x00\x00\x01\x01\x10\x10')
 
     def testMaskWriteRegisterResponseDecode(self):
         ''' Test basic bit message encoding/decoding '''
-        request = '\x00\x04\x00\xf2\x00\x25'
+        request = b'\x00\x04\x00\xf2\x00\x25'
         handle  = MaskWriteRegisterResponse()
         handle.decode(request)
         self.assertEqual(handle.address, 0x0004)

@@ -40,7 +40,7 @@ class ModbusOtherMessageTest(unittest.TestCase):
         self.assertEqual(request.execute().function_code, 0x07)
 
         response = ReadExceptionStatusResponse(0x12)
-        self.assertEqual(response.encode(), '\x12')
+        self.assertEqual(response.encode(), b'\x12')
         response.decode('\x12')
         self.assertEqual(response.status, 0x12)
 
@@ -51,7 +51,7 @@ class ModbusOtherMessageTest(unittest.TestCase):
         self.assertEqual(request.execute().function_code, 0x0b)
 
         response = GetCommEventCounterResponse(0x12)
-        self.assertEqual(response.encode(), '\x00\x00\x00\x12')
+        self.assertEqual(response.encode(), b'\x00\x00\x00\x12')
         response.decode('\x00\x00\x00\x12')
         self.assertEqual(response.status, True)
         self.assertEqual(response.count, 0x12)

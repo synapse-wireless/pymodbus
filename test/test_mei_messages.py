@@ -29,7 +29,7 @@ class ModbusMeiMessageTest(unittest.TestCase):
         params  = {'read_code':DeviceInformation.Basic, 'object_id':0x00 }
         handle  = ReadDeviceInformationRequest(**params)
         result  = handle.encode()
-        self.assertEqual(result, '\x0e\x01\x00')
+        self.assertEqual(result, b'\x0e\x01\x00')
         self.assertEqual("ReadDeviceInformationRequest(1,0)", str(handle))
 
     def testReadDeviceInformationRequestDecode(self):
