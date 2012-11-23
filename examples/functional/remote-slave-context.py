@@ -2,7 +2,7 @@
 import unittest
 from pymodbus.client.sync import ModbusTcpClient
 from pymodbus.datastore.remote import RemoteSlaveContext
-from base_context import ContextRunner
+from .base_context import ContextRunner
 
 class RemoteSlaveContextTest(ContextRunner, unittest.TestCase):
     '''

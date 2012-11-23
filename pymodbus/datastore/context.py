@@ -45,7 +45,7 @@ class ModbusSlaveContext(IModbusSlaveContext):
 
     def reset(self):
         ''' Resets all the datastores to their default values '''
-        for datastore in self.store.values():
+        for datastore in list(self.store.values()):
             datastore.reset()
 
     def validate(self, fx, address, count=1):
@@ -109,7 +109,7 @@ class ModbusServerContext(object):
 
         :returns: An iterator over the slave contexts
         '''
-        return self.__slaves.iteritems()
+        return iter(self.__slaves.items())
 
     def __contains__(self, slave):
         ''' Check if the given slave is in this list

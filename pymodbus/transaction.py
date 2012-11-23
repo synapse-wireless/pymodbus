@@ -54,7 +54,7 @@ class ModbusTransactionManager(object):
 
         :returns: An iterator of the managed transactions
         '''
-        return iter(self.__transactions.keys())
+        return iter(list(self.__transactions.keys()))
 
     def execute(self, request):
         ''' Starts the producer to send the next request to
@@ -74,7 +74,7 @@ class ModbusTransactionManager(object):
                 result = self.client._recv(1024)
                 self.client.framer.processIncomingPacket(result, self.addTransaction)
                 break;
-            except socket.error, msg:
+            except socket.error as msg:
                 self.client.close()
                 _logger.debug("Transaction failed. (%s) " % msg)
                 retries -= 1

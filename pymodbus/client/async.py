@@ -157,11 +157,12 @@ class ModbusUdpClientProtocol(protocol.DatagramProtocol, ModbusClientMixin):
         serial = not isinstance(framer, ModbusSocketFramer)
         self.transaction = ModbusTransactionManager(self, serial)
 
-    def datagramReceived(self, data, (host, port)):
+    def datagramReceived(self, data, xxx_todo_changeme):
         ''' Get response, check for valid message, decode result
 
         :param data: The data returned from the server
         '''
+        (host, port) = xxx_todo_changeme
         _logger.debug("Datagram from: %s:%d" % (host, port))
         self.framer.processIncomingPacket(data, self._handleResponse)
 

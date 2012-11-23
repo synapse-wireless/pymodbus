@@ -109,7 +109,7 @@ class ReadFileRecordRequest(ModbusRequest):
         '''
         self.records = []
         byte_count = struct.unpack('B', data[0])[0]
-        for count in xrange(1, byte_count, 7):
+        for count in range(1, byte_count, 7):
             decoded = struct.unpack('>BHHH', data[count:count+7])
             record  = FileRecord(file_number=decoded[1],
                 record_number=decoded[2], record_length=decoded[3])
@@ -467,7 +467,7 @@ class ReadFifoQueueResponse(ModbusResponse):
         '''
         self.values = []
         _, count = struct.unpack('>HH', data[0:4])
-        for index in xrange(0, count - 4):
+        for index in range(0, count - 4):
             idx = 4 + index * 2
             self.values.append(struct.unpack('>H', data[idx:idx + 2])[0])
 

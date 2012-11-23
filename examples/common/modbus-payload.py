@@ -70,11 +70,11 @@ decoded = {
     'bits': decoder.decode_bits(),
 }
 
-print "-" * 60
-print "Decoded Data"
-print "-" * 60
-for name, value in decoded.items():
-    print ("%s\t" % name), value
+print("-" * 60)
+print("Decoded Data")
+print("-" * 60)
+for name, value in list(decoded.items()):
+    print(("%s\t" % name), value)
 
 #---------------------------------------------------------------------------# 
 # close the client

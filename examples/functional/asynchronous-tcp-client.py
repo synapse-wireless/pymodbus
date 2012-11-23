@@ -3,7 +3,7 @@ import unittest
 from twisted.internet import reactor, protocol
 from pymodbus.constants import Defaults
 from pymodbus.client.async import ModbusClientProtocol
-from base_runner import Runner
+from .base_runner import Runner
 
 class AsynchronousTcpClient(Runner, unittest.TestCase):
     '''

@@ -2,7 +2,7 @@
 import unittest
 from pymodbus.datastore.context import ModbusSlaveContext
 from pymodbus.datastore.store import ModbusSequentialDataBlock
-from base_context import ContextRunner
+from .base_context import ContextRunner
 
 class MemorySlaveContextTest(ContextRunner, unittest.TestCase):
     '''

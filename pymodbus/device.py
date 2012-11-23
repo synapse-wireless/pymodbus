@@ -6,7 +6,7 @@ These are the device management handlers.  They should be
 maintained in the server context and the various methods
 should be inserted in the correct locations.
 """
-from itertools import izip
+
 from pymodbus.constants import DeviceInformation
 from pymodbus.interfaces import Singleton
 from pymodbus.utilities import dict_property
@@ -150,7 +150,7 @@ class ModbusPlusStatistics(object):
 
         :returns: An iterator of the modbus plus statistics
         '''
-        return self.__data.iteritems()
+        return iter(self.__data.items())
 
     def reset(self):
         ''' This clears all of the modbus plus statistics
@@ -163,15 +163,15 @@ class ModbusPlusStatistics(object):
 
         :returns: 54 16-bit words representing the status
         '''
-        return self.__data.values()
+        return list(self.__data.values())
 
     def encode(self):
         ''' Returns a summary of the modbus plus statistics
 
         :returns: 54 16-bit words representing the status
         '''
-        total, values = [], sum(self.__data.values(), [])
-        for c in xrange(0, len(values), 2):
+        total, values = [], sum(list(self.__data.values()), [])
+        for c in range(0, len(values), 2):
             total.append((values[c] << 8) | values[c+1])
         return total
 
@@ -218,7 +218,7 @@ class ModbusDeviceIdentification(object):
         :param info: A dictionary of {int:string} of values
         '''
         if isinstance(info, dict):
-            for key in info.keys():
+            for key in list(info.keys()):
                 if (0x06 >= key >= 0x00) or (0x80 > key > 0x08):
                     self.__data[key] = info[key]
 
@@ -227,14 +227,14 @@ class ModbusDeviceIdentification(object):
 
         :returns: An iterator of the device information
         '''
-        return self.__data.iteritems()
+        return iter(self.__data.items())
 
     def summary(self):
         ''' Return a summary of the main items
 
         :returns: An dictionary of the main items
         '''
-        return dict(zip(self.__names, self.__data.itervalues()))
+        return dict(list(zip(self.__names, iter(self.__data.values()))))
 
     def update(self, value):
         ''' Update the values of this identity
@@ -286,9 +286,9 @@ class DeviceInformationFactory(Singleton):
     '''
 
     __lookup = {
-        DeviceInformation.Basic:    lambda c,r,i: c.__gets(r, range(0x00, 0x03)),
-        DeviceInformation.Regular:  lambda c,r,i: c.__gets(r, range(0x00, 0x08)),
-        DeviceInformation.Extended: lambda c,r,i: c.__gets(r, range(0x80, i)),
+        DeviceInformation.Basic:    lambda c,r,i: c.__gets(r, list(range(0x00, 0x03))),
+        DeviceInformation.Regular:  lambda c,r,i: c.__gets(r, list(range(0x00, 0x08))),
+        DeviceInformation.Extended: lambda c,r,i: c.__gets(r, list(range(0x80, i))),
         DeviceInformation.Specific: lambda c,r,i: c.__get(r, i),
     }
 
@@ -415,7 +415,7 @@ class ModbusCountersHandler(object):
 
         :returns: An iterator of the device counters
         '''
-        return izip(self.__names, self.__data.itervalues())
+        return zip(self.__names, iter(self.__data.values()))
 
     def update(self, values):
         ''' Update the values of this identity
@@ -423,7 +423,7 @@ class ModbusCountersHandler(object):
 
         :param values: The value to copy values from
         '''
-        for k, v in values.iteritems():
+        for k, v in values.items():
             v += self.__getattribute__(k)
             self.__setattr__(k, v)
 
@@ -438,7 +438,7 @@ class ModbusCountersHandler(object):
         :returns: A byte with each bit representing each counter
         '''
         count, result = 0x01, 0x00
-        for i in self.__data.values():
+        for i in list(self.__data.values()):
             if i != 0x00: result |= count
             count <<= 1
         return result
@@ -584,7 +584,7 @@ class ModbusControlBlock(Singleton):
 
         :param mapping: Dictionary of key:value pairs to set
         '''
-        for entry in mapping.iteritems():
+        for entry in mapping.items():
             if entry[0] >= 0 and entry[0] < len(self.__diagnostic):
                 self.__diagnostic[entry[0]] = (entry[1] != 0)
 

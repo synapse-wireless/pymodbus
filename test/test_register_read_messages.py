@@ -6,7 +6,7 @@ from pymodbus.register_read_message import ReadRegistersResponseBase
 from pymodbus.exceptions import *
 from pymodbus.pdu import ModbusExceptions
 
-from modbus_mocks import MockContext, FakeList
+from .modbus_mocks import MockContext, FakeList
 
 #---------------------------------------------------------------------------#
 # Fixture
@@ -53,16 +53,16 @@ class ReadRegisterMessagesTest(unittest.TestCase):
         del self.response_read
 
     def testReadRegisterResponseBase(self):
-        response = ReadRegistersResponseBase(range(10))
+        response = ReadRegistersResponseBase(list(range(10)))
         for index in range(10):
             self.assertEqual(response.getRegister(index), index)
 
     def testRegisterReadRequests(self):
-        for request, response in self.request_read.items():
+        for request, response in list(self.request_read.items()):
             self.assertEqual(request.encode(), response)
 
     def testRegisterReadResponses(self):
-        for request, response in self.response_read.items():
+        for request, response in list(self.response_read.items()):
             self.assertEqual(request.encode(), response)
 
     def testRegisterReadResponseDecode(self):
@@ -162,9 +162,9 @@ class ReadRegisterMessagesTest(unittest.TestCase):
         self.assertEqual(request.write_registers, [0x00]*5)
 
     def testSerializingToString(self):
-        for request in self.request_read.keys():
+        for request in list(self.request_read.keys()):
             self.assertTrue(str(request) != None)
-        for request in self.response_read.keys():
+        for request in list(self.response_read.keys()):
             self.assertTrue(str(request) != None)
 
 #---------------------------------------------------------------------------#

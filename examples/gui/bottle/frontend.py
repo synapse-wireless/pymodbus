@@ -121,11 +121,11 @@ class ModbusApiWebApp(object):
             address, count = int(address), int(count)
             context = self._server.store[int(store)]
             values  = context.getValues(store, address, count)
-            values  = dict(zip(range(address, address + count), values))
+            values  = dict(list(zip(list(range(address, address + count)), values)))
             result  = { 'data' : values }
             result.update(Response.success)
             return result
-        except Exception, ex: log.error(ex)
+        except Exception as ex: log.error(ex)
         return Response.failure
 
     def get_coils(self, address='0', count='1'):
@@ -147,11 +147,11 @@ class ModbusApiWebApp(object):
         try:
             address = int(address)
             values  = json.loads(values)
-            print values
+            print(values)
             context = self._server.store[int(store)]
             context.setValues(store, address, values)
             return Response.success
-        except Exception, ex: log.error(ex)
+        except Exception as ex: log.error(ex)
         return Response.failure
 
     def post_coils(self, address='0'):
@@ -202,8 +202,8 @@ def register_api_routes(application, register):
     '''
     log.info("installing application routes:")
     methods = inspect.getmembers(application)
-    methods = filter(lambda n: not n[0].startswith('_'), methods)
-    for method, func in dict(methods).items():
+    methods = [n for n in methods if not n[0].startswith('_')]
+    for method, func in list(dict(methods).items()):
         pieces = method.split('_')
         verb, path = pieces[0], pieces[1:]
         args = inspect.getargspec(func).args[1:]

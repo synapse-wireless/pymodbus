@@ -177,7 +177,7 @@ class RedisSlaveContext(IModbusSlaveContext):
 
         key = self.__get_prefix(key)
         request = ('%s:%s' % (key, v) for v in range(s, e + 1))
-        request = dict(zip(request, final))
+        request = dict(list(zip(request, final)))
         self.client.mset(request)
 
     #--------------------------------------------------------------------------#
@@ -239,5 +239,5 @@ class RedisSlaveContext(IModbusSlaveContext):
 
         key = self.__get_prefix(key)
         request = ('%s:%s' % (key, v) for v in range(offset, count + 1))
-        request = dict(zip(request, values))
+        request = dict(list(zip(request, values)))
         self.client.mset(request)

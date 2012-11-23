@@ -64,7 +64,7 @@ class ModbusXML:
             try:
                 self.next = attrib['index']
             except KeyError: raise ConversionException("Invalid XML: index")
-        elif tag in self.lookup.keys():
+        elif tag in list(self.lookup.keys()):
             self.h = self.result[self.lookup[tag]]
 
     def end(self, tag):
@@ -79,7 +79,7 @@ class ModbusXML:
         Callback for node data
         @param data The data for the current node
         '''
-        if data in self.convert.keys():
+        if data in list(self.convert.keys()):
             result = self.convert[data]
         else: result = data
         self.h[self.next] = data
@@ -131,10 +131,10 @@ def main():
         parser = etree.XMLParser(target = ModbusXML())
         result = etree.parse(opt.input, parser)
         store_dump(result, opt.output)
-        print "Created datastore: %s\n" % opt.output
+        print("Created datastore: %s\n" % opt.output)
 
-    except ConversionException, ex:
-        print ex
+    except ConversionException as ex:
+        print(ex)
         parser.print_help()
 
 #---------------------------------------------------------------------------#
