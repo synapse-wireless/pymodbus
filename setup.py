@@ -33,14 +33,13 @@ setup(name  = 'pymodbus',
     description = 'A fully featured modbus protocol stack in python',
     long_description='''
     Pymodbus aims to be a fully implemented modbus protocol stack implemented
-    using twisted.  Its orignal goal was to allow simulation of thousands of
+    using twisted.  Its original goal was to allow simulation of thousands of
     modbus devices on a single machine for monitoring software testing.
     ''',
     classifiers = [
         'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Environment :: X11 Applications :: GTK',
-        'Framework :: Twisted',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: POSIX :: Linux',
@@ -49,7 +48,7 @@ setup(name  = 'pymodbus',
         'Topic :: System :: Networking',
         'Topic :: Utilities'
     ],
-    keywords = 'modbus, twisted, scada',
+    keywords = 'modbus, scada',
     author = __author__,
     author_email = 'bashwork@gmail.com',
     maintainer = __author__,
@@ -63,13 +62,10 @@ setup(name  = 'pymodbus',
     include_package_data = True,
     zip_safe = True,
     install_requires = [
-        'twisted >= 12.2.0',
-        'pyserial >= 2.6'
     ],
     extras_require = {
         'quality'   : [ 'coverage >= 3.5.3', 'nose >= 1.2.1', 'mock >= 1.0.0', 'pep8 >= 1.3.3' ],
-        'documents' : [ 'sphinx >= 1.1.3' ],
-        'twisted'   : [ 'pyasn1 >= 0.1.4', 'pycrypto >= 2.6' ],
+        'documents' : [ 'sphinx >= 1.1.3' ]
     },
     test_suite = 'nose.collector',
     cmdclass = command_classes,

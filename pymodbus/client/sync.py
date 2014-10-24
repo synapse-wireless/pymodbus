@@ -1,6 +1,5 @@
 import sys
 import socket
-import serial
 
 from pymodbus.constants import Defaults
 from pymodbus.factory import ClientDecoder
@@ -275,109 +274,10 @@ class ModbusUdpClient(BaseModbusClient):
         return "%s:%s" % (self.host, self.port)
 
 
-#---------------------------------------------------------------------------#
-# Modbus Serial Client Transport Implementation
-#---------------------------------------------------------------------------#
-class ModbusSerialClient(BaseModbusClient):
-    ''' Implementation of a modbus serial client
-    '''
-
-    def __init__(self, method='ascii', **kwargs):
-        ''' Initialize a serial client instance
-
-        The methods to connect are::
-
-          - ascii
-          - rtu
-          - binary
-
-        :param method: The method to use for connection
-        :param port: The serial port to attach to
-        :param stopbits: The number of stop bits to use
-        :param bytesize: The bytesize of the serial messages
-        :param parity: Which kind of parity to use
-        :param baudrate: The baud rate to use for the serial device
-        :param timeout: The timeout between serial requests (default 3s)
-        '''
-        self.method   = method
-        self.socket   = None
-        BaseModbusClient.__init__(self, self.__implementation(method), **kwargs)
-
-        self.port     = kwargs.get('port', 0)
-        self.stopbits = kwargs.get('stopbits', Defaults.Stopbits)
-        self.bytesize = kwargs.get('bytesize', Defaults.Bytesize)
-        self.parity   = kwargs.get('parity',   Defaults.Parity)
-        self.baudrate = kwargs.get('baudrate', Defaults.Baudrate)
-        self.timeout  = kwargs.get('timeout',  Defaults.Timeout)
-
-    @staticmethod
-    def __implementation(method):
-        ''' Returns the requested framer
-
-        :method: The serial framer to instantiate
-        :returns: The requested serial framer
-        '''
-        method = method.lower()
-        if   method == 'ascii':  return ModbusAsciiFramer(ClientDecoder())
-        elif method == 'rtu':    return ModbusRtuFramer(ClientDecoder())
-        elif method == 'binary': return ModbusBinaryFramer(ClientDecoder())
-        elif method == 'socket': return ModbusSocketFramer(ClientDecoder())
-        raise ParameterException("Invalid framer method requested")
-
-    def connect(self):
-        ''' Connect to the modbus serial server
-
-        :returns: True if connection succeeded, False otherwise
-        '''
-        if self.socket: return True
-        try:
-            self.socket = serial.Serial(port=self.port, timeout=self.timeout,
-                bytesize=self.bytesize, stopbits=self.stopbits,
-                baudrate=self.baudrate, parity=self.parity)
-        except serial.SerialException, msg:
-            _logger.error(msg)
-            self.close()
-        return self.socket != None
-
-    def close(self):
-        ''' Closes the underlying socket connection
-        '''
-        if self.socket:
-            self.socket.close()
-        self.socket = None
-
-    def _send(self, request):
-        ''' Sends data on the underlying socket
-
-        :param request: The encoded request to send
-        :return: The number of bytes written
-        '''
-        if not self.socket:
-            raise ConnectionException(self.__str__())
-        if request:
-            return self.socket.write(request)
-        return 0
-
-    def _recv(self, size):
-        ''' Reads data from the underlying descriptor
-
-        :param size: The number of bytes to read
-        :return: The bytes read
-        '''
-        if not self.socket:
-            raise ConnectionException(self.__str__())
-        return self.socket.read(size)
-
-    def __str__(self):
-        ''' Builds a string representation of the connection
-
-        :returns: The string representation
-        '''
-        return "%s baud[%s]" % (self.method, self.baudrate)
 
 #---------------------------------------------------------------------------#
 # Exported symbols
 #---------------------------------------------------------------------------#
 __all__ = [
-    "ModbusTcpClient", "ModbusUdpClient", "ModbusSerialClient"
+    "ModbusTcpClient", "ModbusUdpClient"
 ]
