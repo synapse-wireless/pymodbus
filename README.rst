@@ -100,6 +100,9 @@ out all mentions of twisted.  It should be noted that without twisted,
 one will only be able to run the synchronized version as the
 asynchronous versions uses twisted for its event loop.
 
+NB: To support E10 v1.0 use, Twisted and serial are no longer dependencies.
+This branch only supports TCP/UDP syncronous clients and servers.
+
 ------------------------------------------------------------
 Current Work In Progress
 ------------------------------------------------------------
