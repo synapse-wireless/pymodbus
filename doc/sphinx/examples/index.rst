@@ -42,6 +42,8 @@ Custom Pymodbus Code
    modbus-scraper
    modbus-simulator
    concurrent-client
+   libmodbus-client
+   remote-server-context
 
 Example Frontend Code
 --------------------------------------------------
