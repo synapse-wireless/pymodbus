@@ -28,8 +28,12 @@ from pymodbus import __version__, __author__
 #---------------------------------------------------------------------------#
 # configuration
 #---------------------------------------------------------------------------#
-setup(name  = 'pymodbus',
-    version = __version__,
+setup(
+    name  = 'pymodbus',
+    setup_requires=['vcversioner'],
+    vcversioner={
+        'version_module_paths': ['pymodbus/_version.py'],
+    },
     description = 'A fully featured modbus protocol stack in python',
     long_description='''
     Pymodbus aims to be a fully implemented modbus protocol stack.

@@ -1,6 +1,88 @@
-*.pyc
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
 *.swp
-build/
-dist/
 pymodbus.egg-info/
 .coverage
+
+# Versioner
+_version.py
+version.txt
+
+# Distribution / packaging
+.Python
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.venv
+env/
+.env
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+simplysnap_test*.sqlite
+simplysnap.sqlite
+nvparams_test*.dat
+
+# Subversion
+.svn
+
+# Translations
+*.mo
+
+# Wing
+*.wpu
+*.wpr
+
+# PyCharm
+.idea
+
+# IntelliJ
+*.iml
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+# Rope
+.ropeproject
+
+# Django stuff:
+*.log
+*.pot
+
+# Sphinx documentation
+docs/_build/
+
+# Exception for nosetest library directory
+!simplysnap/test/lib
+!simplysnap/test/simulator/lib
+venv
+simplysnap/simplysnap.log.2014-12-04
+simplysnap/simplysnap.log.2014-12-05
+.eggs/
+
+cover
